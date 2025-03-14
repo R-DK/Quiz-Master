@@ -1,7 +1,8 @@
 from application.database import db
+from flask_security import UserMixin, RoleMixin
 
-
-class User(db.Model):
+# User Model
+class User(db.Model, UserMixin):
     # common fields for both user and admin
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
@@ -15,5 +16,19 @@ class User(db.Model):
     # activity - active or inactive (user)
     active = db.Column(db.Boolean, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
-    # Check if current user is an Admin  or not
-    is_admin = db.Column(db.Boolean, nullable=False)
+    # relationship with roles
+    roles = db.relationship('Role', secondary='users_roles', backref=db.backref('users', lazy='dynamic'))
+
+
+# Role Model
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    description = db.Column(db.String(255), nullable=True)
+
+
+# UsersRoles Model - many to many relationship between User and Role
+class UsersRoles(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'))
