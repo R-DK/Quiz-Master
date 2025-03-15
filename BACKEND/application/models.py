@@ -9,15 +9,15 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     fs_uniqifier = db.Column(db.String(255), nullable=False) # Unique Identifier(Token) for Flask Security to allow user to access endpoints based on their roles
     # user fields
-    firstname = db.Column(db.String(255), nullable=True)
+    firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=True)
     qualification = db.Column(db.String(255), nullable=True)
     dob = db.Column(db.Date, nullable=True)
     # activity - active or inactive (user)
-    active = db.Column(db.Boolean, nullable=False)
+    active = db.Column(db.Boolean, nullable=False) # By default value is True
     created_at = db.Column(db.DateTime, nullable=False)
     # relationship with roles
-    roles = db.relationship('Role', secondary='users_roles', backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary='users_roles', backref=db.backref('users', lazy='dynamic')) # All roles associated with the user
 
 
 # Role Model
