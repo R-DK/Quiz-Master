@@ -3,6 +3,7 @@ from application.database import db
 from application.models import User, Role
 from application.config import LocalDevelopmentConfig
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_security import hash_password
 
 
 # Function to create the Flask Application
@@ -31,7 +32,7 @@ with app.app_context(): # Application Context
         # Creating the Admin User
         app.security.datastore.create_user(
             email="admin@quizmaster.com", 
-            password="admin@123", 
+            password=hash_password("admin@123"),  # Hashing the Password using the Password Hashing Algorithm (bcrypt) provided in the Config 
             firstname="Admin", 
             active=True, 
             roles=["admin"]
