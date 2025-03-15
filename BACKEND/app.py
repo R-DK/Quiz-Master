@@ -37,6 +37,7 @@ with app.app_context(): # Application Context
             active=True, 
             roles=["admin"]
         )
+        db.session.commit()
 
 
 # Main Function
