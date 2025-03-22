@@ -5,14 +5,7 @@ from flask_security import auth_required, roles_required, hash_password
 from datetime import datetime
 
 
-@app.route('/admin')
-@auth_required('token')  # this decorator ensures that the user is authenticated
-@roles_required('admin')  # this decorator ensures that the user has the 'admin' role (RBAC)
-def admin_home():
-    return jsonify({"message": "Welcome Admin!"})
-
-
-@app.route('/register', methods=["POST"])
+@app.route('/api/register', methods=["POST"])
 def register():
     data = dict(request.get_json())
     if not data or not {"email", "password", "firstname", "qualification"}.issubset(data.keys()):
@@ -30,3 +23,10 @@ def register():
 
     db.session.commit()
     return jsonify({"message": "User Created"}), 201
+
+
+@app.route('/api/admin')
+@auth_required('token')  # this decorator ensures that the user is authenticated
+@roles_required('admin')  # this decorator ensures that the user has the 'admin' role (RBAC)
+def admin_home():
+    return jsonify({"message": "Welcome Admin!"})
