@@ -17,7 +17,8 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean, nullable=False) # By default value is True
     created_at = db.Column(db.DateTime, nullable=False)
     # relationship with roles
-    roles = db.relationship('Role', secondary='users_roles', backref=db.backref('users', lazy='dynamic')) # All roles associated with the user
+    roles = db.relationship('Role', secondary='users_roles', backref=db.backref('user', lazy='dynamic')) # All roles associated with the user
+    quizzes = db.relationship('Quiz', seconday="scores", backref='user', lazy='dynamic', cascade='all, delete-orphan') # All quizzes taken by the user
 
 
 # Role Model
